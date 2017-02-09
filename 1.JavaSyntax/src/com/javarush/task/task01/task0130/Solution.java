@@ -11,7 +11,6 @@ public class Solution {
 
     public static double convertCelsiumToFahrenheit(int celsium) {
         //напишите тут ваш код
-
-        return 0;
+        return celsium / ((double) 5/9) + 32;
     }
 }
