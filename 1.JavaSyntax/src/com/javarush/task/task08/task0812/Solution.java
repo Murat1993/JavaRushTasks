@@ -1,6 +1,8 @@
 package com.javarush.task.task08.task0812;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /* 
@@ -29,16 +31,16 @@ public class Solution {
         int maxSeries = 0;
         int previous = list.get(0);
         for (int i = 1; i < list.size(); i++) {
-              if (previous == list.get(i)) {
-                  series++;
-              } else {
-                  previous = list.get(i);
-                  if (maxSeries < series) {
-                      maxSeries = series;
-                  }
-                  series = 0;
-                  series++;
-              }
+            if (previous == list.get(i)) {
+                series++;
+            } else {
+                previous = list.get(i);
+                if (maxSeries < series) {
+                    maxSeries = series;
+                }
+                series = 0;
+                series++;
+            }
         }
 
         System.out.println(maxSeries);
