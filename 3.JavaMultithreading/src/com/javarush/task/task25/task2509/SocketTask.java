@@ -1,6 +1,5 @@
 package com.javarush.task.task25.task2509;
 
-import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.RunnableFuture;
@@ -14,11 +13,6 @@ public abstract class SocketTask<T> implements CancellableTask<T> {
 
     public synchronized void cancel() {
         //close all resources here
-        try {
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public RunnableFuture<T> newTask() {
