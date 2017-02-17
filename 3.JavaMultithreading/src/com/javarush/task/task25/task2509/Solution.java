@@ -6,7 +6,8 @@ import java.util.concurrent.*;
 Все не так легко, как кажется
 1. Почитать в инете про Socket, ThreadPoolExecutor, RunnableFuture, Callable.
 2. Реализуй логику метода cancel в классе SocketTask.
-3. Реализуй логику метода cancel для локального класса внутри метода newTask в классе SocketTask.
+3. Реализуй логику метода cancel для локального класса
+   внутри метода newTask в классе SocketTask.
 */
 public class Solution extends ThreadPoolExecutor {
     public Solution(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
