@@ -26,10 +26,11 @@ public abstract class SocketTask<T> implements CancellableTask<T> {
             public boolean cancel(boolean mayInterruptIfRunning) {
                 //close all resources here by using proper SocketTask method
                 //call super-class method in finally block
-                if (mayInterruptIfRunning) {
+                try {
                     SocketTask.this.cancel();
+                } finally {
+                    return super.cancel(mayInterruptIfRunning);
                 }
-                return false;
             }
         };
     }
