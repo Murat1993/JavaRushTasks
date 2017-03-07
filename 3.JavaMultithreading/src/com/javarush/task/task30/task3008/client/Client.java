@@ -21,15 +21,19 @@ import java.io.IOException;
 а) Создавать новый сокетный поток с помощью метода getSocketThread.
 б) Помечать созданный поток как daemon, это нужно для того,
 чтобы при выходе из программы вспомогательный поток прервался автоматически.
-в) Запустить вспомогательный поток.
+в) Запустить вспомогательный поток. +
+
 г) Заставить текущий поток ожидать, пока он не получит нотификацию из другого потока.
 Подсказка: используй wait и синхронизацию на уровне объекта.
 Если во время ожидания возникнет исключение, сообщи об этом пользователю и выйди из программы.
+
 д) После того, как поток дождался нотификации, проверь значение clientConnected.
  Если оно true – выведи «Соединение установлено. Для выхода наберите команду ‘exit’.«.
- Если оно false – выведи «Произошла ошибка во время работы клиента.».
+ Если оно false – выведи «Произошла ошибка во время работы клиента.». +
+
 е) Считывай сообщения с консоли пока клиент подключен. Если будет введена команда ‘exit‘,
  то выйди из цикла.
+
 ж) После каждого считывания, если метод shouldSendTextFromConsole() возвращает true,
 отправь считанный текст с помощью метода sendTextMessage().
 
@@ -43,6 +47,40 @@ public class Client {
 
     public class SocketThread extends Thread {
 
+    }
+
+    public static void main(String[] args) {
+        Client client = new Client();
+        client.run();
+    }
+
+    public void run() {
+        SocketThread thread = getSocketThread();
+        thread.setDaemon(true);
+        thread.start();
+        synchronized (this) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                ConsoleHelper.writeMessage("Something happened!");
+                System.exit(0);
+            }
+            if (clientConnected) {
+                ConsoleHelper.writeMessage("Соединение установлено. Для выхода наберите команду ‘exit’.");
+            } else {
+                ConsoleHelper.writeMessage("Произошла ошибка во время работы клиента.");
+            }
+
+            while (clientConnected) {
+                String string = ConsoleHelper.readString();
+                if (string.equals("exit")) {
+                    break;
+                }
+                if (shouldSendTextFromConsole()) {
+                    sendTextMessage(string);
+                }
+            }
+        }
     }
 
     protected String getServerAddress() {
