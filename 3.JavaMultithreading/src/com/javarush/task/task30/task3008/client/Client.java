@@ -6,39 +6,23 @@ import com.javarush.task.task30.task3008.Message;
 import com.javarush.task.task30.task3008.MessageType;
 
 import java.io.IOException;
+import java.net.Socket;
 
 /*
-* Приступим к написанию главного функционала класса Client.
+* Последний, но самый главный метод класса SocketThread – это метод void run().
+* Добавь его. Его реализация с учетом уже созданных методов выглядит очень просто.
 
-1. Добавь метод void run(). Он должен создавать вспомогательный поток SocketThread,
-ожидать пока тот установит соединение с сервером,
-а после этого в цикле считывать сообщения с консоли и отправлять их серверу.
-Условием выхода из цикла будет отключение клиента или ввод пользователем команды ‘exit‘.
-Для информирования главного потока, что соединение установлено во
-вспомогательном потоке, используй методы wait и notify объекта класса Client.
+Давай напишем ее:
+1) Запроси адрес и порт сервера с помощью методов getServerAddress() и getServerPort().
+2) Создай новый объект класса java.net.Socket, используя данные,
+ полученные в предыдущем пункте.
+3) Создай объект класса Connection, используя сокет из п.17.2.
+4) Вызови метод, реализующий «рукопожатие» клиента с сервером (clientHandshake()).
+5) Вызови метод, реализующий основной цикл обработки сообщений сервера.
+6) При возникновении исключений IOException или ClassNotFoundException сообщи главному потоку о проблеме,
+ используя notifyConnectionStatusChanged и false в качестве параметра.
 
-Реализация метода run должна:
-а) Создавать новый сокетный поток с помощью метода getSocketThread.
-б) Помечать созданный поток как daemon, это нужно для того,
-чтобы при выходе из программы вспомогательный поток прервался автоматически.
-в) Запустить вспомогательный поток. +
-
-г) Заставить текущий поток ожидать, пока он не получит нотификацию из другого потока.
-Подсказка: используй wait и синхронизацию на уровне объекта.
-Если во время ожидания возникнет исключение, сообщи об этом пользователю и выйди из программы.
-
-д) После того, как поток дождался нотификации, проверь значение clientConnected.
- Если оно true – выведи «Соединение установлено. Для выхода наберите команду ‘exit’.«.
- Если оно false – выведи «Произошла ошибка во время работы клиента.». +
-
-е) Считывай сообщения с консоли пока клиент подключен. Если будет введена команда ‘exit‘,
- то выйди из цикла.
-
-ж) После каждого считывания, если метод shouldSendTextFromConsole() возвращает true,
-отправь считанный текст с помощью метода sendTextMessage().
-
-2. Добавь метод main().
-Он должен создавать новый объект типа Client и вызывать у него метод run().*/
+Клиент готов, можешь запустить сервер, несколько клиентов и проверить как все работает.*/
 
 public class Client {
 
@@ -46,6 +30,57 @@ public class Client {
     protected Connection connection;
 
     public class SocketThread extends Thread {
+
+        public void run() {
+            String serverAddress = getServerAddress();
+            int port = getServerPort();
+            try {
+                Socket socket = new Socket(serverAddress, port);
+                connection = new Connection(socket);
+                clientHandshake();
+                clientMainLoop();
+            } catch (IOException e) {
+                notifyConnectionStatusChanged(false);
+            } catch (ClassNotFoundException e) {
+                notifyConnectionStatusChanged(false);
+            }
+        }
+
+        protected void clientHandshake() throws IOException, ClassNotFoundException {
+            while (true) {
+                Message message = connection.receive();
+                MessageType type = message.getType();
+
+                if (type == MessageType.NAME_REQUEST) {
+                    String userName = getUserName();
+                    connection.send(new Message(MessageType.USER_NAME, userName));
+                } else if (type == MessageType.NAME_ACCEPTED) {
+                    notifyConnectionStatusChanged(true);
+                    return;
+                } else {
+                    throw new IOException("Unexpected MessageType");
+                }
+            }
+        }
+
+        protected void clientMainLoop() throws IOException, ClassNotFoundException {
+                while (true) {
+                    Message message = connection.receive();
+
+                    MessageType type = message.getType();
+                    String data = message.getData();
+
+                    if (type == MessageType.TEXT) {
+                        processIncomingMessage(data);
+                    } else if (type == MessageType.USER_ADDED) {
+                        informAboutAddingNewUser(data);
+                    } else if (type == MessageType.USER_REMOVED) {
+                        informAboutDeletingNewUser(data);
+                    } else {
+                        throw new IOException("Unexpected MessageType");
+                    }
+                }
+        }
 
         protected void processIncomingMessage(String message) {
             ConsoleHelper.writeMessage(message);
