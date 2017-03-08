@@ -93,6 +93,7 @@ public class Client {
         protected void informAboutDeletingNewUser(String userName) {
             ConsoleHelper.writeMessage(userName + " leave chat.");
         }
+
         protected void notifyConnectionStatusChanged(boolean clientConnected) {
             synchronized (Client.this) {
                 Client.this.clientConnected = clientConnected;
