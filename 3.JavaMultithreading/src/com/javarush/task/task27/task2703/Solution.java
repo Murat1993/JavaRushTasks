@@ -2,8 +2,6 @@ package com.javarush.task.task27.task2703;
 
 /* 
 Создаем deadlock
-Расставь модификаторы так, чтобы при работе с этим кодом появился deadlock.
-Метод main порождает deadlock, поэтому не участвует в тестировании.
 */
 public class Solution {
     static class Friend {
@@ -17,14 +15,14 @@ public class Solution {
             return this.name;
         }
 
-        public synchronized void bow(Friend bower) {
+        public void bow(Friend bower) {
             System.out.format("%s: %s"
                             + " has bowed to me!%n",
                     this.name, bower.getName());
             bower.bowBack(this);
         }
 
-        public synchronized void bowBack(Friend bower) {
+        public void bowBack(Friend bower) {
             System.out.format("%s: %s"
                             + " has bowed back to me!%n",
                     this.name, bower.getName());
