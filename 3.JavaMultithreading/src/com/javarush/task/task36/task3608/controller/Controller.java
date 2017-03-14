@@ -1,31 +1,26 @@
 package com.javarush.task.task36.task3608.controller;
 
-/*
-* 1. Создай пакет controller, в котором создай класс Controller.
-*
-Этот класс будет получать запрос от клиента, оповещать Модель об этом,
-а Модель, в свою очередь, будет обновлять ModelData.
-
-2. Добавь в контроллер поле Model model вместе с сеттером.
-
-3. В контроллере создай публичный метод void onShowAllUsers(),
-который должен обратиться к модели и инициировать загрузку пользователей.
-
-4. Создай пакет view. В нем создай интерфейс View.
-
-5. В интерфейс View добавь два метода:
-void refresh(ModelData modelData) и void setController(Controller controller)*/
 
 import com.javarush.task.task36.task3608.model.Model;
+import com.javarush.task.task36.task3608.view.EditUserView;
 import com.javarush.task.task36.task3608.view.UsersView;
+
+/*
+3. Создай в контроллере поле EditUserView editUserView с сеттером.
+
+Когда наши данные выводятся в консоль, то совсем не понятно,
+список каких пользователей — удаленных или нет — выводится.
+Давай сделаем так, чтобы Вью отображала эту информацию.
+Все данные для отображения хранятся в Моделе.
+* */
 
 public class Controller {
     private Model model;
     private UsersView usersView;
+    private EditUserView editUserView;
 
-    public void onShowAllUsers() {
-        model.loadUsers();
-        usersView.refresh(model.getModelData());
+    public void setEditUserView(EditUserView editUserView) {
+        this.editUserView = editUserView;
     }
 
     public void setModel(Model model) {
@@ -34,5 +29,15 @@ public class Controller {
 
     public void setUsersView(UsersView usersView) {
         this.usersView = usersView;
+    }
+
+    public void onShowAllUsers() {
+        model.loadUsers();
+        usersView.refresh(model.getModelData());
+    }
+
+    public void onShowAllDeletedUsers() {
+        model.loadDeletedUsers();
+        usersView.refresh(model.getModelData());
     }
 }
