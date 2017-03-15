@@ -6,10 +6,22 @@ import com.javarush.task.task36.task3608.model.service.UserServiceImpl;
 
 import java.util.List;
 
+/*
+
+public void loadUserById(long userId) {
+User user = userService.getUsersById(userId);
+…setActiveUser(user);
+}
+* */
 
 public class MainModel implements Model {
     private UserService userService = new UserServiceImpl();
     private ModelData modelData = new ModelData();
+
+    public void loadUserById(long userId) {
+        User user = userService.getUsersById(userId);
+        modelData.setActiveUser(user);
+    }
 
     @Override
     public ModelData getModelData() {

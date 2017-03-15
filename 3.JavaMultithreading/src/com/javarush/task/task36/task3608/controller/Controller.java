@@ -1,6 +1,7 @@
 package com.javarush.task.task36.task3608.controller;
 
 
+import com.javarush.task.task36.task3608.bean.User;
 import com.javarush.task.task36.task3608.model.Model;
 import com.javarush.task.task36.task3608.view.EditUserView;
 import com.javarush.task.task36.task3608.view.UsersView;
@@ -39,5 +40,10 @@ public class Controller {
     public void onShowAllDeletedUsers() {
         model.loadDeletedUsers();
         usersView.refresh(model.getModelData());
+    }
+
+    public void onOpenUserEditForm(long userId) {
+        model.loadUserById(userId);
+        editUserView.refresh(model.getModelData());
     }
 }
