@@ -5,22 +5,25 @@ import java.util.Collections;
 import java.util.List;
 
 public class Human {
-    private List<Human> children = new ArrayList<>();
-    public static int nextId = 0;
-    private int id;
-    protected int age;
-    protected String name;
-    protected int course;
-
-    protected int[] size;
-
-    protected boolean isSoldier;
-
     public static final int FIRST = 1;
     public static final int SECOND = 2;
     public static final int THIRD = 3;
     public static final int FOURTH = 4;
+    public static int nextId = 0;
+    protected int age;
+    protected String name;
+    protected int course;
+    protected int[] size;
+    private List<Human> children = new ArrayList<>();
+    private int id;
     private int bloodGroup;
+
+    public Human(String name, int age) {
+        this.name = name;
+        this.age = age;
+        this.id = nextId;
+        nextId++;
+    }
 
     public List<Human> getChildren() {
         return Collections.unmodifiableList(children);
@@ -34,18 +37,12 @@ public class Human {
         children.remove(child);
     }
 
-    public void setBloodGroup(int code) {
-        bloodGroup = code;
-    }
-
     public int getBloodGroup() {
         return bloodGroup;
     }
 
-    public Human(boolean isSoldier) {
-        this.isSoldier = isSoldier;
-        this.id = nextId;
-        nextId++;
+    public void setBloodGroup(int code) {
+        bloodGroup = code;
     }
 
     public int getAge() {
@@ -69,12 +66,8 @@ public class Human {
     }
 
     public void live() {
-        if (isSoldier)
-            fight();
     }
 
-    public void fight() {
-    }
 
     public int getId() {
         return id;
