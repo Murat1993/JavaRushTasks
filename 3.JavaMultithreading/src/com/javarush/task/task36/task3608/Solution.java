@@ -8,35 +8,26 @@ import com.javarush.task.task36.task3608.view.UsersView;
 
 
 /*
-1. Распредели методы по классам MVC:
+Это последнее задание по MVC.
 
-public void onOpenUserEditForm(long userId) {
-…loadUserById(userId);
-…refresh(…getModelData());
-}
+1. Следуя принципу MVC аналогично реализации предыдущих методов сделай следующее:
+напиши логику обновления пользователя.
+После обновления должен отображаться список пользователей.
 
-public void fireEventOpenUserEditForm(long id) {
-…onOpenUserEditForm(id);
-}
+Распредели методы по классам MVC, используя следующие сигнатуры публичных методов:
+void fireEventUserChanged(String name, long id, int level)
+void onUserChange(String name, long id, int level)
+void changeUserData(String name, long id, int level)
 
-public void loadUserById(long userId) {
-User user = userService.getUsersById(userId);
-…setActiveUser(user);
-}
+где name и level — это новые значения для пользователя с выбранным id.
 
-!!!! Пользователь видит Вью со списком пользователей,
-нажимает на одного из них, запрос идет на сервер,
-выгребаем новые данные и отображаем другую Вью, которая относится к одному выбранному пользователю.
-Учти это при реализации этого задания.
+Примечание: метод, который ты собираешься добавить в Вью нужно добавить в EditUserView.
 
-2. Добавь в метод main открытие формы редактирования для
-пользователя с id=126 перед вызовом метода fireEventShowDeletedUsers().
+2. Добавь в main вызов fireEventUserChanged перед вызовом метода fireEventShowDeletedUsers().
 
-3. Добавь в интерфейс Model метод, который ты поместил в Модель,
-реализуй его в FakeModel: выброси UnsupportedOperationException.
+3. Добавь в интерфейс Model метод, который ты поместил в Модель, реализуй его в FakeModel:
+выброси UnsupportedOperationException. +
 
-2. Добавь в метод main открытие формы редактирования
-для пользователя с id=126 перед вызовом метода fireEventShowDeletedUsers().
 
 * */
 
@@ -48,12 +39,15 @@ public class Solution {
         Controller controller = new Controller();
 
         usersView.setController(controller);
+        editUserView.setController(controller);
         controller.setModel(model);
         controller.setUsersView(usersView);
         controller.setEditUserView(editUserView);
 
         usersView.fireEventShowAllUsers();
         usersView.fireEventOpenUserEditForm(126);
+        editUserView.fireEventUserChanged("Sidorov", 126, 2);
+        editUserView.fireEventUserDeleted(124L);
         usersView.fireEventShowDeletedUsers();
     }
 }

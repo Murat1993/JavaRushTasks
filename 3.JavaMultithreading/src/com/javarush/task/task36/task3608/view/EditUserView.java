@@ -3,18 +3,17 @@ package com.javarush.task.task36.task3608.view;
 import com.javarush.task.task36.task3608.controller.Controller;
 import com.javarush.task.task36.task3608.model.ModelData;
 
-/*
-2. Аналогично UsersView создай EditUserView.
-Логика метода refresh:
-2.1. Вывести в консоль «User to be edited:«.
-2.2. С новой строки вывести табуляцию и активного пользователя.
-2.3. С новой строки вывести разделитель «===================================================».
-
-* */
 
 public class EditUserView implements View {
     private Controller controller;
 
+    public void fireEventUserChanged(String name, long id, int level) {
+        controller.onUserChange(name, id, level);
+    }
+
+    public void fireEventUserDeleted(long id) {
+        controller.onUserDelete(id);
+    }
 
     @Override
     public void refresh(ModelData modelData) {
