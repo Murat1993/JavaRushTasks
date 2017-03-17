@@ -54,17 +54,55 @@ public class University {
         this.students = students;
     }
 
-    public Student getStudentWithAverageGrade() {
-        //TODO:
+    /*
+    6.2. Добавление параметра.
+    Добавить параметр с типом double в метод getStudentWithAverageGrade(),
+    чтобы было понятно с каким средним балом нужен студент.
+    Реализуй метод getStudentWithAverageGrade().*/
+
+    public Student getStudentWithAverageGrade(double averageGrade) {
+        for (Student student : students) {
+            if (student.getAverageGrade() == averageGrade) {
+                return student;
+            }
+        }
         return null;
     }
+/*
+    6.3. Удаление параметра. Убери параметр из метода getStudentWithMaxAverageGrade().
+    Реализуй этот метод, он должен возвращать студента с максимальным средним балом.*/
 
-    public Student getStudentWithMaxAverageGrade(double averageGrade) {
-        //TODO:
-        return null;
+    public Student getStudentWithMaxAverageGrade() {
+        double maxAverage = students.get(0).getAverageGrade();
+        Student studentWithMaxAverage = null;
+        for (Student student : students) {
+            if (student.getAverageGrade() > maxAverage) {
+                maxAverage = student.getAverageGrade();
+                studentWithMaxAverage = student;
+            }
+        }
+        return studentWithMaxAverage;
+    }
+/*
+    6.4. Разделение запроса и модификатора.
+    Раздели метод getStudentWithMinAverageGradeAndExpel
+    на Student getStudentWithMinAverageGrade()
+    и void expel(Student student). Первый метод должен возвратить студента с минимальным
+    средним балом, а второй — отчислить переданного студента (удалять из списка students).*/
+
+    public Student getStudentWithMinAverageGrade() {
+        double minAverage = students.get(0).getAverageGrade();
+        Student studentWithMinAverage = null;
+        for (Student student : students) {
+            if (student.getAverageGrade() < minAverage) {
+                minAverage = student.getAverageGrade();
+                studentWithMinAverage = student;
+            }
+        }
+        return studentWithMinAverage;
     }
 
-    public void getStudentWithMinAverageGradeAndExpel() {
-        //TODO:
+    public void expel(Student student) {
+        students.remove(student);
     }
 }
