@@ -2,9 +2,8 @@ package com.javarush.task.task29.task2909.human;
 
 import java.util.Date;
 
-public class Student extends Human {
+public class Student extends UniversityPerson {
     private double averageGrade;
-    private String university;
     private Date beginningOfSession;
     private Date endOfSession;
     private int course;
@@ -25,13 +24,6 @@ public class Student extends Human {
         return course;
     }
 
-    public String getUniversity() {
-        return university;
-    }
-
-    public void setUniversity(String university) {
-        this.university = university;
-    }
 
     public void printData() {
         System.out.println("Студент: " + name);
