@@ -22,6 +22,7 @@ public class Student extends UniversityPerson {
     private Date beginningOfSession;
     private Date endOfSession;
     private int course;
+
     public Student(String name, int age, double averageGrade) {
         super(name, age);
         this.averageGrade = averageGrade;
@@ -48,9 +49,8 @@ public class Student extends UniversityPerson {
     }
 
     public void incAverageGrade(double delta) {
-        averageGrade += delta;
+        setAverageGrade(getAverageGrade() + delta);
     }
-
 
 
     public void setBeginningOfSession(Date date) {

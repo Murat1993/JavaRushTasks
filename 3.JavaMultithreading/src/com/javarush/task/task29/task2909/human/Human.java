@@ -6,33 +6,45 @@ import java.util.List;
 
 
 /*
-8.1. Удаление сеттера. Удали метод setId(). Поле id должно устанавливаться только в момент
-создания объекта.
+9.1. Самоинкапсуляция поля. Перепиши метод incAverageGrade() используя
+сеттер и геттер для доступа к averageGrade.
 
-8.2. Сокрытие метода (поля). Изменить область видимости поля nextId в соответствии с
-областью его использования.
+9.2. Замена поля-массива объектом.
+Замени массив int[] size объектом нового типа Size,
+содержащим публичные поля: рост int height и вес int weight. Публичный класс Size объяви
+внутри класса Human.
 
-8.3. Замена исключения проверкой условия. Перепиши метод removeStudent(int index), чтобы
-он удалял студента из списка студентов только, если он там есть. Метод не должен кидать
-исключение.
+9.3. Инкапсуляция поля.
+Сокрой поле company в классе Worker. Добавь сеттер и геттер для него. +
 
-8.4. Удаление управляющего флага. Перепиши метод findDimaOrSasha(), сохранив логику его
-работы. В методе не должны использоваться флаги типа found, воспользуйся оператором
-break.
+9.4. Замена кодирования типа классом.
+
+9.4.1. Объяви публичный класс группы крови BloodGroup внутри пакета human.
+
+9.4.2. Добавь в класс BloodGroup приватное константное поле int code, приватный конструктор,
+принимающий int и инициализирующий поле code, геттер для поля класса.
+
+9.4.3. Добавь в класс BloodGroup статические методы first(), second(), third() и fourth(),
+создающие и возвращающие объекты типа BloodGroup с правильным кодом внутри
+(1, 2, 3 и 4 соответственно).
+
+9.4.4. Примени в классе Human новый тип BloodGroup..
 * */
 
 public class Human implements Alive {
-    public static final int FIRST = 1;
-    public static final int SECOND = 2;
-    public static final int THIRD = 3;
-    public static final int FOURTH = 4;
+
+    public class Size {
+        public int height;
+        public int weight;
+    }
+
     private static int nextId = 0;
     protected int age;
     protected String name;
-    protected int[] size;
+    protected Size size;
     private List<Human> children = new ArrayList<>();
     private final int id;
-    private int bloodGroup;
+    private BloodGroup bloodGroup;
 
     public Human(String name, int age) {
         this.name = name;
@@ -61,12 +73,12 @@ public class Human implements Alive {
         children.remove(child);
     }
 
-    public int getBloodGroup() {
+    public BloodGroup getBloodGroup() {
         return bloodGroup;
     }
 
-    public void setBloodGroup(int code) {
-        bloodGroup = code;
+    public void setBloodGroup(BloodGroup bloodGroup) {
+        this.bloodGroup = bloodGroup;
     }
 
     public int getAge() {
@@ -94,6 +106,6 @@ public class Human implements Alive {
     }
 
     public void printSize() {
-        System.out.println("Рост: " + size[0] + " Вес: " + size[1]);
+        System.out.println("Рост: " + size.height + " Вес: " + size.weight);
     }
 }
