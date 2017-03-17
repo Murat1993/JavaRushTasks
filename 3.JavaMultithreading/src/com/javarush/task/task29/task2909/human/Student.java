@@ -3,21 +3,18 @@ package com.javarush.task.task29.task2909.human;
 import java.util.Date;
 
 /*
-6.1. Замена параметра набором специализированных методов. Замени метод setValue() класса
-Student специализированными методами setCourse и setAverageGrade.
+7.1. Параметризация метода.
+Замени методы incAverageGradeBy01() и incAverageGradeBy02() одним методом incAverageGrade(double delta).
 
-6.2. Добавление параметра.
-Добавить параметр с типом double в метод getStudentWithAverageGrade(),
- чтобы было понятно с каким средним балом нужен студент.
-Реализуй метод getStudentWithAverageGrade().
+7.2. Передача всего объекта. Перепиши метод addInfoAboutStudent(),
+чтобы он в качестве параметра принимал объект типа Student.
 
-6.3. Удаление параметра. Убери параметр из метода getStudentWithMaxAverageGrade().
-Реализуй этот метод, он должен возвращать студента с максимальным средним балом.
+7.3. Замена параметра вызовом метода. Перепиши метод printInfoAboutStudent(),
+чтобы он не требовал в качестве параметра имя студента, а получал его,
+вызвав соответствующий метод у переданного объекта.
 
-6.4. Разделение запроса и модификатора.
-Раздели метод getStudentWithMinAverageGradeAndExpel на Student getStudentWithMinAverageGrade()
-и void expel(Student student). Первый метод должен возвратить студента с минимальным
- средним балом, а второй — отчислить переданного студента (удалять из списка students).
+7.4. Замена параметров объектом. Перепиши методы setBeginningOfSession и setEndOfSession,
+чтобы они вместо набора параметров принимали по одному объекту даты.
 * */
 
 public class Student extends UniversityPerson {
@@ -50,20 +47,18 @@ public class Student extends UniversityPerson {
         this.course = course;
     }
 
-    public void incAverageGradeBy01() {
-        averageGrade += 0.1;
+    public void incAverageGrade(double delta) {
+        averageGrade += delta;
     }
 
-    public void incAverageGradeBy02() {
-        averageGrade += 0.2;
+
+
+    public void setBeginningOfSession(Date date) {
+        beginningOfSession = date;
     }
 
-    public void setBeginningOfSession(int day, int month, int year) {
-        beginningOfSession = new Date(year, month, day);
-    }
-
-    public void setEndOfSession(int day, int month, int year) {
-        endOfSession = new Date(year, month, day);
+    public void setEndOfSession(Date date) {
+        endOfSession = date;
     }
 
     public double getAverageGrade() {
