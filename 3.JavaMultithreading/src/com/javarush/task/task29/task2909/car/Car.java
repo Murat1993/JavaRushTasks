@@ -2,7 +2,34 @@ package com.javarush.task.task29.task2909.car;
 
 import java.util.Date;
 
+/*Разберись с кодом в пакете car (машина).
+
+10.1. Замена конструктора фабричным методом.
+
+10.1.1. Объяви классы Truck (грузовик), Sedan (седан) и Cabriolet (кабриолет), унаследованные от Car.
+
+10.1.2. Добавь в них конструкторы, принимающие int numberOfPassengers.
+
+10.1.3. Добавь фабричный статический метод Car create(int type,
+ int numberOfPassengers) в класс Car и реализуй его.
+
+10.1.4. Измени область видимости конструктора класса Car.
+* */
+
 public class Car {
+
+    public static Car create(int type, int numberOfPassengers) {
+        switch (type) {
+            case TRUCK:
+                return new Truck(numberOfPassengers);
+            case SEDAN:
+                return new Sedan(numberOfPassengers);
+            case CABRIOLET:
+                return new Cabriolet(numberOfPassengers);
+        }
+        return null;
+    }
+
     static public final int TRUCK = 0;
     static public final int SEDAN = 1;
     static public final int CABRIOLET = 2;
@@ -18,7 +45,7 @@ public class Car {
     private boolean driverAvailable;
     private int numberOfPassengers;
 
-    public Car(int type, int numberOfPassengers) {
+    protected Car(int type, int numberOfPassengers) {
         this.type = type;
         this.numberOfPassengers = numberOfPassengers;
     }
