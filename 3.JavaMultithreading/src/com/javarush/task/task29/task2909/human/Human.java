@@ -6,21 +6,19 @@ import java.util.List;
 
 
 /*
-5.1. Создание шаблонного метода.
-5.1.1. Добавь в класс Human метод String getPosition(),
-который должен возвращать строку «Человек«.
+8.1. Удаление сеттера. Удали метод setId(). Поле id должно устанавливаться только в момент
+создания объекта.
 
-5.1.2. Переопредели этот метод в классе Student и Teacher.
- Метод должен возвращать «Студент» и «Преподаватель» соответственно.
+8.2. Сокрытие метода (поля). Изменить область видимости поля nextId в соответствии с
+областью его использования.
 
-5.1.3. Замени метод printData в подклассах шаблонным методом в базовом классе,
-использующим getPosition(). +
+8.3. Замена исключения проверкой условия. Перепиши метод removeStudent(int index), чтобы
+он удалял студента из списка студентов только, если он там есть. Метод не должен кидать
+исключение.
 
-5.2. Замена делегирования наследованием. Класс Worker должен наследоваться от Human,
- а не содержать его.
-
-5.3. Переименование метода.
-Переименуй метод setSlr, чтобы было понятно сеттером чего является этот метод.
+8.4. Удаление управляющего флага. Перепиши метод findDimaOrSasha(), сохранив логику его
+работы. В методе не должны использоваться флаги типа found, воспользуйся оператором
+break.
 * */
 
 public class Human implements Alive {
@@ -28,12 +26,12 @@ public class Human implements Alive {
     public static final int SECOND = 2;
     public static final int THIRD = 3;
     public static final int FOURTH = 4;
-    public static int nextId = 0;
+    private static int nextId = 0;
     protected int age;
     protected String name;
     protected int[] size;
     private List<Human> children = new ArrayList<>();
-    private int id;
+    private final int id;
     private int bloodGroup;
 
     public Human(String name, int age) {
@@ -93,10 +91,6 @@ public class Human implements Alive {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void printSize() {
