@@ -4,7 +4,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Human {
+
+/*
+3.1. Спуск поля. Спусти поле course в соответствующий класс. Сделай его приватным.
+3.2. Спуск метода. Спусти геттер для поля course в соответствующий класс.
+
+3.3. Извлечение интерфейса.
+3.3.1. Создай интерфейс Alive (живой) в пакете human.
+3.3.2. Интерфейс должен содержать метод жить live().
+3.3.3. Добавь интерфейс нужному классу.
+3.4. Свертывание иерархии. Избавься от класса Professor.
+* */
+
+public class Human implements Alive {
     public static final int FIRST = 1;
     public static final int SECOND = 2;
     public static final int THIRD = 3;
@@ -12,7 +24,6 @@ public class Human {
     public static int nextId = 0;
     protected int age;
     protected String name;
-    protected int course;
     protected int[] size;
     private List<Human> children = new ArrayList<>();
     private int id;
@@ -59,10 +70,6 @@ public class Human {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getCourse() {
-        return course;
     }
 
     public void live() {
