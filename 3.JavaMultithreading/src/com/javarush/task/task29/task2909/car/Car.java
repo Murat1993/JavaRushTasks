@@ -3,24 +3,33 @@ package com.javarush.task.task29.task2909.car;
 import java.util.Date;
 
 /*
-11.1.	Замена кода ошибки исключением. Перепиши метод заправиться fill(double
-numberOfLiters), чтобы он в случае ошибки кидал исключение Exception.
+12.1. Объединение условных операторов.
 
-11.2.	Разбиение условного оператора.
+12.1.1. Добавь внутренний метод, сообщающий, могут ли быть перевезены пассажиры
+boolean canPassengersBeTransferred() в класс Car. Метод должен возвращать true, если
+водитель доступен isDriverAvailable и есть топливо fuel.
 
-11.2.1.	Добавь и реализуй метод в классе Car, определяющий относится ли переданная дата к
-лету: boolean isSummer(Date date , Date summerStart, Date summerEnd). +
+12.1.2. Перепиши метод getNumberOfPassengersCanBeTransferred(), объединив условные
+операторы (используй метод canPassengersBeTransferred()). +
 
-11.2.2.	Добавь и реализуй метод, рассчитывающий расход топлива зимой: double
-getWinterConsumption(int length).
 
-11.2.3.	Добавь и реализуй метод, рассчитывающий расход топлива летом: double
-getSummerConsumption(int length).
+12.2. Объединение дублирующихся фрагментов в условных операторах.
+ Перепиши метод
+startMoving(), чтобы в нем не было повторяющихся вызовов функций. +
 
-11.2.4.	Перепиши метод getTripConsumption(), используя новые методы.
+12.3. Замена магического числа символьной константой. Замени магические числа в методе
+getMaxSpeed() на константные переменные метода: MAX_TRUCK_SPEED,
+MAX_SEDAN_SPEED и MAX_CABRIOLET_SPEED. +
+
+12.4. Замена условного оператора полиморфизмом.
+
+12.4.1. Переопредели метод getMaxSpeed() в подклассах, избавившись от условного оператора.
+12.4.2. Метод getMaxSpeed() в классе Car сделай абстрактным.
+
+
 * */
 
-public class Car {
+public abstract class Car {
 
     public static Car create(int type, int numberOfPassengers) {
         switch (type) {
@@ -37,6 +46,9 @@ public class Car {
     static public final int TRUCK = 0;
     static public final int SEDAN = 1;
     static public final int CABRIOLET = 2;
+    static public final int MAX_TRUCK_SPEED = 80;
+    static public final int MAX_SEDAN_SPEED = 120;
+    static public final int MAX_CABRIOLET_SPEED = 90;
 
     double fuel;
 
@@ -52,6 +64,18 @@ public class Car {
     protected Car(int type, int numberOfPassengers) {
         this.type = type;
         this.numberOfPassengers = numberOfPassengers;
+    }
+
+    /*
+    12.1.1. Добавь внутренний метод, сообщающий, могут ли быть перевезены пассажиры
+    boolean canPassengersBeTransferred() в класс Car. Метод должен возвращать true, если
+    водитель доступен isDriverAvailable и есть топливо fuel.
+
+    12.1.2. Перепиши метод getNumberOfPassengersCanBeTransferred(), объединив условные
+    операторы (используй метод canPassengersBeTransferred()).*/
+
+    private boolean canPassengersBeTransferred() {
+        return isDriverAvailable() && fuel > 0.0;
     }
 
     public void fill(double numberOfLiters) throws Exception {
@@ -81,12 +105,9 @@ public class Car {
     }
 
     public int getNumberOfPassengersCanBeTransferred() {
-        if (!isDriverAvailable())
-            return 0;
-        if (fuel <= 0)
-            return 0;
-
-        return numberOfPassengers;
+        if (canPassengersBeTransferred())
+            return numberOfPassengers;
+        return 0;
     }
 
     public boolean isDriverAvailable() {
@@ -100,10 +121,8 @@ public class Car {
     public void startMoving() {
         if (numberOfPassengers > 0) {
             fastenPassengersBelts();
-            fastenDriverBelt();
-        } else {
-            fastenDriverBelt();
         }
+        fastenDriverBelt();
     }
 
     public void fastenPassengersBelts() {
@@ -112,11 +131,5 @@ public class Car {
     public void fastenDriverBelt() {
     }
 
-    public int getMaxSpeed() {
-        if (type == TRUCK)
-            return 80;
-        if (type == SEDAN)
-            return 120;
-        return 90;
-    }
+    public abstract int getMaxSpeed();
 }
