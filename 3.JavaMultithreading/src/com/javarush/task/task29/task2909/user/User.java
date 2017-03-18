@@ -1,5 +1,33 @@
 package com.javarush.task.task29.task2909.user;
 
+
+/*Разберись с кодом пакета user (пользователь).
+
+13.1. Извлечение метода.
+Добавь метод printInfo(), который будет выводить имя и фамилию
+в консоль в формате
+
+Имя: Вася
+Фамилия: Пупкин
+
+Замени повторяющийся код метода printUsers() его вызовом. +
+
+13.2. Встраивание метода.
+Избавься от метода ageLessThan16().
+
+13.3. Перемещение метода.
+Перемести методы printInfo() и printAdditionalInfo() в класс User.+
+
+13.4. Расщепление переменной.
+Переменная age в методе calculateAverageAge() используется для разных промежуточных значений.
+Перепиши метод без использования этой переменной. +
+
+
+13.5. Удаление присваиваний параметрам.
+ Перепиши метод calculateRate(), чтобы он не
+пытался менять входные параметры, а просто возвращал рассчитанное значение.
+* */
+
 public class User {
     private String name;
     private String surname;
@@ -15,6 +43,19 @@ public class User {
         this.name = name;
         this.surname = surname;
         this.age = age;
+    }
+
+    public void printInfo() {
+        System.out.println("Имя: " + getName());
+        System.out.println("Фамилия: " + getSurname());
+    }
+
+
+    public void printAdditionalInfo() {
+        if (getAge() < 16)
+            System.out.println("Пользователь моложе 16 лет");
+        else
+            System.out.println("Пользователь старше 16 лет");
     }
 
     public String getName() {
