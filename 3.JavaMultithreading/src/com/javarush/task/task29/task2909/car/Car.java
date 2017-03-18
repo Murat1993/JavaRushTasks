@@ -2,18 +2,22 @@ package com.javarush.task.task29.task2909.car;
 
 import java.util.Date;
 
-/*Разберись с кодом в пакете car (машина).
+/*
+11.1.	Замена кода ошибки исключением. Перепиши метод заправиться fill(double
+numberOfLiters), чтобы он в случае ошибки кидал исключение Exception.
 
-10.1. Замена конструктора фабричным методом.
+11.2.	Разбиение условного оператора.
 
-10.1.1. Объяви классы Truck (грузовик), Sedan (седан) и Cabriolet (кабриолет), унаследованные от Car.
+11.2.1.	Добавь и реализуй метод в классе Car, определяющий относится ли переданная дата к
+лету: boolean isSummer(Date date , Date summerStart, Date summerEnd). +
 
-10.1.2. Добавь в них конструкторы, принимающие int numberOfPassengers.
+11.2.2.	Добавь и реализуй метод, рассчитывающий расход топлива зимой: double
+getWinterConsumption(int length).
 
-10.1.3. Добавь фабричный статический метод Car create(int type,
- int numberOfPassengers) в класс Car и реализуй его.
+11.2.3.	Добавь и реализуй метод, рассчитывающий расход топлива летом: double
+getSummerConsumption(int length).
 
-10.1.4. Измени область видимости конструктора класса Car.
+11.2.4.	Перепиши метод getTripConsumption(), используя новые методы.
 * */
 
 public class Car {
@@ -50,21 +54,30 @@ public class Car {
         this.numberOfPassengers = numberOfPassengers;
     }
 
-    public int fill(double numberOfLiters) {
+    public void fill(double numberOfLiters) throws Exception {
         if (numberOfLiters < 0)
-            return -1;
+            throw new Exception();
         fuel += numberOfLiters;
-        return 0;
+    }
+
+    public boolean isSummer(Date date , Date summerStart, Date summerEnd) {
+        return date.after(summerStart) && date.before(summerEnd);
+    }
+
+    public double getWinterConsumption(int length) {
+        return length * winterFuelConsumption + winterWarmingUp;
+    }
+
+    public double getSummerConsumption(int length) {
+        return length * summerFuelConsumption;
     }
 
     public double getTripConsumption(Date date, int length, Date SummerStart, Date SummerEnd) {
-        double consumption;
-        if (date.before(SummerStart) || date.after(SummerEnd)) {
-            consumption = length * winterFuelConsumption + winterWarmingUp;
+        if (isSummer(date, SummerStart, SummerEnd)) {
+            return getSummerConsumption(length);
         } else {
-            consumption = length * summerFuelConsumption;
+            return getWinterConsumption(length);
         }
-        return consumption;
     }
 
     public int getNumberOfPassengersCanBeTransferred() {
