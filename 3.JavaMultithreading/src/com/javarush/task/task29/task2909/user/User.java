@@ -1,31 +1,27 @@
 package com.javarush.task.task29.task2909.user;
 
 
-/*Разберись с кодом пакета user (пользователь).
+/*14.1. Перемещение поля.
+Замени поля isManAnya и isManRoma полем man в нужном классе.
+Добавь сеттер и геттер для нового поля (при выборе имен методов учти тип поля). +
 
-13.1. Извлечение метода.
-Добавь метод printInfo(), который будет выводить имя и фамилию
-в консоль в формате
+14.2. Извлечение класса.
 
-Имя: Вася
-Фамилия: Пупкин
+14.2.1. Добавь класс Address в пакет user. +
 
-Замени повторяющийся код метода printUsers() его вызовом. +
+14.2.2. Перенеси поля country, city и house в новый класс. +
 
-13.2. Встраивание метода.
-Избавься от метода ageLessThan16().
+14.2.3. Добавь сеттеры и геттеры для них. +
 
-13.3. Перемещение метода.
-Перемести методы printInfo() и printAdditionalInfo() в класс User.+
-
-13.4. Расщепление переменной.
-Переменная age в методе calculateAverageAge() используется для разных промежуточных значений.
-Перепиши метод без использования этой переменной. +
+14.2.4. Перепиши класс User, используя поле класса Address address. +
 
 
-13.5. Удаление присваиваний параметрам.
- Перепиши метод calculateRate(), чтобы он не
-пытался менять входные параметры, а просто возвращал рассчитанное значение.
+14.3. Встраивание класса.
+Класс House почти ничего не делает, избавься от него.
+
+14.4. Сокрытие делегирования.
+14.4.1. Добавь в класс User метод getBoss().
+14.4.2. Перепиши реализацию метода getBossName(User user) класса UserHelper. +
 * */
 
 public class User {
@@ -33,16 +29,52 @@ public class User {
     private String surname;
     private int age;
 
-    private String country;
-    private String city;
-    private House house;
-
+    private Address address;
+    private boolean man;
     private Work work;
 
     public User(String name, String surname, int age) {
         this.name = name;
         this.surname = surname;
         this.age = age;
+    }
+
+
+    public String getCountry() {
+        return address.getCountry();
+    }
+
+    public void setCountry(String country) {
+        address.setCountry(country);
+    }
+
+    public String getCity() {
+        return address.getCity();
+    }
+
+    public void setCity(String city) {
+        address.setCity(city);
+    }
+
+    public String getHouse() {
+        return address.getHouse();
+    }
+
+    public void setHouse(String house) {
+        address.setHouse(house);
+    }
+
+
+    public String getBoss() {
+        return work.getBoss();
+    }
+
+    public boolean isMan() {
+        return man;
+    }
+
+    public void setMan(boolean man) {
+        this.man = man;
     }
 
     public void printInfo() {
@@ -82,24 +114,12 @@ public class User {
         this.age = age;
     }
 
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
     public String getAddress() {
-        return country + " " + city + " " + house.house;
+        return address.getCountry() + " " + address.getCity() + " " + address.getHouse();
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public Work getWork() {
