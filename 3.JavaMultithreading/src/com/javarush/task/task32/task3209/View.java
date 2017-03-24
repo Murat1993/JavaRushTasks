@@ -1,29 +1,26 @@
 package com.javarush.task.task32.task3209;
 
+import com.javarush.task.task32.task3209.listeners.FrameListener;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/*3.1. Добавь и проинициализируй поля в классе представления:
+/*
+4.3. Реализуй метод init() представления. Он должен:
 
-3.1.1. JTabbedPane tabbedPane — это будет панель с двумя вкладками. +
+4.3.1. Вызывать инициализацию графического интерфейса initGui().
 
-3.1.2. JTextPane htmlTextPane — это будет компонент для визуального редактирования html.
-Он будет размещен на первой вкладке. +
+4.3.2. Добавлять слушателя событий нашего окна.
+В качестве подписчика создай и используй объект класса FrameListener.
+ В качестве метода для добавления подписчика используй подходящий метод из
+ класса Window от которого наследуется и наш класс через классы JFrame и Frame.
 
-3.1.3. JEditorPane plainTextPane — это будет компонент для редактирования html в виде текста,
- он будет отображать код html (теги и их содержимое). +
+4.3.3. Показывать наше окно. Используй метод setVisible с правильным параметром.
+На этом этапе приложение при запуске должно показывать окно,
+которое можно растягивать, разворачивать, закрыть и т.д.
 
-3.2. Добавь класс FrameListener в пакет listeners. Он должен:
 
-3.2.1. Быть унаследован от WindowAdapter.
-
-3.2.2. Иметь поле View view.
-
-3.2.3. В конструкторе принимать View и инициализировать внутреннее поле.
-
-3.2.4. Иметь переопределенный метод windowClosing(WindowEvent windowEvent),
-который должен вызывать exit() у представления.
 * */
 
 public class View extends JFrame implements ActionListener {
@@ -32,7 +29,26 @@ public class View extends JFrame implements ActionListener {
     private JTextPane htmlTextPane = new JTextPane();
     private JEditorPane plainTextPane = new JEditorPane();
 
+    public void init() {
+        initGui();
+        FrameListener listener = new FrameListener(this);
+        this.addWindowListener(listener);
+        this.setVisible(true);
+    }
 
+    public void initGui() {
+        initMenuBar();
+        initEditor();
+        pack();
+    }
+
+    public void initMenuBar() {
+
+    }
+
+    public void initEditor() {
+
+    }
 
     public Controller getController() {
         return controller;
@@ -40,10 +56,6 @@ public class View extends JFrame implements ActionListener {
 
     public void setController(Controller controller) {
         this.controller = controller;
-    }
-
-    public void init() {
-
     }
 
     @Override
