@@ -2,8 +2,10 @@ package com.javarush.task.task32.task3209;
 
 import com.javarush.task.task32.task3209.listeners.FrameListener;
 import com.javarush.task.task32.task3209.listeners.TabbedPaneChangeListener;
+import com.javarush.task.task32.task3209.listeners.UndoListener;
 
 import javax.swing.*;
+import javax.swing.undo.UndoManager;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,11 +13,11 @@ import java.awt.event.ActionListener;
 import static com.javarush.task.task32.task3209.MenuHelper.*;
 
 /*
-11.1. Добавь в представление поле UndoManager undoManager.
-Разберись для чего используется этот класс. Проинициализируй поле класса новым объектом.
+11.1. Добавь в представление поле UndoManager undoManager. +
+Разберись для чего используется этот класс. Проинициализируй поле класса новым объектом. +
 
 11.2. Добавь класс UndoListener реализующий интерфейс UndoableEditListener в пакет listeners.
-Этот класс будет следить за правками, которые можно отменить или вернуть.
+Этот класс будет следить за правками, которые можно отменить или вернуть. +
 
 11.3. Добавь в класс UndoListener:
 11.3.1. Поле UndoManager undoManager.
@@ -26,6 +28,11 @@ import static com.javarush.task.task32.task3209.MenuHelper.*;
 11.4. Добавь в представление поле UndoListener undoListener,
 проинициализируй его используя undoManager.
 
+
+
+
+
+
 11.5. Добавь в представление методы:
 11.5.1. void undo() — отменяет последнее действие. Реализуй его используя undoManager.
 Метод не должен кидать исключений, логируй их.
@@ -33,10 +40,11 @@ import static com.javarush.task.task32.task3209.MenuHelper.*;
 11.5.2. void redo() — возвращает ранее отмененное действие.
 Реализуй его по аналогии с предыдущим пунктом.
 
-11.5.3. Реализуй методы boolean canUndo() и boolean canRedo() используя undoManager.
-11.5.4. Реализуй геттер для undoListener.
+11.5.3. Реализуй методы boolean canUndo() и boolean canRedo() используя undoManager. +
+11.5.4. Реализуй геттер для undoListener. +
 11.5.5. Добавь и реализуй метод void resetUndo(),
-который должен сбрасывать все правки в менеджере undoManager.
+который должен сбрасывать все правки в менеджере undoManager. +
+
 */
 
 public class View extends JFrame implements ActionListener {
@@ -44,10 +52,36 @@ public class View extends JFrame implements ActionListener {
     private JTabbedPane tabbedPane = new JTabbedPane();
     private JTextPane htmlTextPane = new JTextPane();
     private JEditorPane plainTextPane = new JEditorPane();
+    private UndoManager undoManager = new UndoManager();
+    private UndoListener undoListener = new UndoListener(undoManager);
 
     public View() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            ExceptionHandler.log(e);
+        }
+    }
+
+    public void resetUndo() {
+        undoManager.discardAllEdits();
+    }
+
+    public UndoListener getUndoListener() {
+        return undoListener;
+    }
+
+    public void undo() {
+        try {
+            undoManager.undo();
+        } catch (Exception e) {
+            ExceptionHandler.log(e);
+        }
+    }
+
+    public void redo() {
+        try {
+            undoManager.redo();
         } catch (Exception e) {
             ExceptionHandler.log(e);
         }
@@ -112,10 +146,10 @@ public class View extends JFrame implements ActionListener {
     }
 
     public boolean canUndo() {
-        return false;
+        return undoManager.canUndo();
     }
 
     public boolean canRedo() {
-        return false;
+        return undoManager.canRedo();
     }
 }
