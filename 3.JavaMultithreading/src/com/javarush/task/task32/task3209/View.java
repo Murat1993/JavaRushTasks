@@ -45,6 +45,10 @@ import static com.javarush.task.task32.task3209.MenuHelper.*;
 11.5.5. Добавь и реализуй метод void resetUndo(),
 который должен сбрасывать все правки в менеджере undoManager. +
 
+13.1. Добавь в представление метод boolean isHtmlTabSelected().
+Он должен возвращать true, если выбрана вкладка,
+отображающая html в панели вкладок (подсказка: ее индекс 0).
+
 */
 
 public class View extends JFrame implements ActionListener {
@@ -61,6 +65,10 @@ public class View extends JFrame implements ActionListener {
         } catch (Exception e) {
             ExceptionHandler.log(e);
         }
+    }
+
+    public boolean isHtmlTabSelected() {
+        return tabbedPane.getSelectedIndex() == 0;
     }
 
     public void resetUndo() {
