@@ -84,4 +84,18 @@ public class Controller {
     public void exit() {
         System.exit(0);
     }
+
+    public void createNewDocument() {
+
+    }
+
+    public void openDocument() {
+
+    }
+
+    public void saveDocument() {
+    }
+
+    public void saveDocumentAs() {
+    }
 }
