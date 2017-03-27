@@ -2,33 +2,29 @@ package com.javarush.task.task32.task3209;
 
 import com.javarush.task.task32.task3209.listeners.UndoListener;
 
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.*;
 
-/*20.1. Реализуй метод создания нового документа createNewDocument() в контроллере.
-Он должен:
+/*
+Реализуем в контроллере метод для сохранения файла под новым именем saveDocumentAs().
+Реализация должна:
+22.1. Переключать представление на html вкладку. +
+22.2. Создавать новый объект для выбора файла JFileChooser. +
+22.3. Устанавливать ему в качестве фильтра объект HTMLFileFilter. +
+22.4. Показывать диалоговое окно «Save File» для выбора файла.
 
+22.5. Если пользователь подтвердит выбор файла:
+22.5.1. Сохранять выбранный файл в поле currentFile. +
+22.5.2. Устанавливать имя файла в качестве заголовка окна представления. +
+22.5.3. Создавать FileWriter на базе currentFile. +
+22.5.4. Переписывать данные из документа document в объекта FileWriter-а аналогично тому,
+как мы это делали в методе getPlainText(). +
+22.6. Метод не должен кидать исключения.
 
-20.1.1. Выбирать html вкладку у представления.
-
-20.1.2. Сбрасывать текущий документ. +
-
-20.1.3. Устанавливать новый заголовок окна, например: «HTML редактор«.
- Воспользуйся методом setTitle(), который унаследован в нашем представлении.
-
-20.1.4. Сбрасывать правки в Undo менеджере. Используй метод resetUndo представления.
-
-20.1.5. Обнулить переменную currentFile.
-
-20.2. Реализуй метод инициализации init() контроллера.
-Он должен просто вызывать метод создания нового документа.
-
-Проверь работу пункта меню Новый.
+Проверь работу пункта меню Сохранить как…
 * */
 
 public class Controller {
@@ -46,6 +42,30 @@ public class Controller {
         view.setController(controller);
         view.init();
         controller.init();
+    }
+
+    public void saveDocumentAs() {
+        view.selectHtmlTab();
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileFilter(new HTMLFileFilter());
+        if (chooser.showSaveDialog(view) == JFileChooser.APPROVE_OPTION) {
+            currentFile = chooser.getSelectedFile();
+            view.setTitle(currentFile.getName());
+            try {
+                FileWriter writer = new FileWriter(currentFile);
+                new HTMLEditorKit().write(writer, document, 0, document.getLength());
+
+            } catch (IOException e) {
+                ExceptionHandler.log(e);
+            } catch (BadLocationException e) {
+                ExceptionHandler.log(e);
+            }
+        }
+
+
+    }
+
+    public void saveDocument() {
     }
 
     public String getPlainText() {
@@ -105,11 +125,5 @@ public class Controller {
 
     public void openDocument() {
 
-    }
-
-    public void saveDocument() {
-    }
-
-    public void saveDocumentAs() {
     }
 }
