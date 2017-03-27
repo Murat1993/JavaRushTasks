@@ -1,27 +1,23 @@
 package com.javarush.task.task32.task3209;
 
 /*
-*Добавь в контроллер метод resetDocument(), который будет сбрасывать текущий документ.
- *  Он должен:
-15.1. Удалять у текущего документа document слушателя правок которые можно
-отменить/вернуть (найди подходящий для этого метод, унаследованный от AbstractDocument).
-Слушателя нужно запросить у представления (метод getUndoListener()).
-Не забудь проверить, что текущий документ существует (не null).
-
-
-15.2. Создавать новый документ по умолчанию и присваивать его полю document.
-
-Подсказка: воспользуйся подходящим методом класса HTMLEditorKit.
-
-15.3. Добавлять новому документу слушателя правок.
-15.4. Вызывать у представления метод update().
+*Добавь метод setPlainText(String text) в контроллер. Он будет записывать переданный
+* текст с html тегами в документ document. При его реализации:
+16.1. Сбрось документ.
+16.2. Создай новый реадер StringReader на базе переданного текста. +
+16.3. Вызови метод read() из класса HTMLEditorKit, который вычитает данные из реадера в
+документ document.
+16.4. Проследи, чтобы метод не кидал исключения. Их необходимо просто логировать.
 */
 
 import com.javarush.task.task32.task3209.listeners.UndoListener;
 
+import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
 
 public class Controller {
     private View view;
@@ -38,6 +34,18 @@ public class Controller {
         view.setController(controller);
         view.init();
         controller.init();
+    }
+
+    public void setPlainText(String text) {
+        resetDocument();
+        StringReader reader = new StringReader(text);
+        try {
+            new HTMLEditorKit().read(reader, document, 0);
+        } catch (IOException e) {
+            ExceptionHandler.log(e);
+        } catch (BadLocationException e) {
+            ExceptionHandler.log(e);
+        }
     }
 
     public void resetDocument() {
