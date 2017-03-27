@@ -9,22 +9,25 @@ import javax.swing.text.html.HTMLEditorKit;
 import java.io.*;
 
 /*
-Реализуем в контроллере метод для сохранения файла под новым именем saveDocumentAs().
-Реализация должна:
-22.1. Переключать представление на html вкладку. +
-22.2. Создавать новый объект для выбора файла JFileChooser. +
-22.3. Устанавливать ему в качестве фильтра объект HTMLFileFilter. +
-22.4. Показывать диалоговое окно «Save File» для выбора файла.
+23.1. Напишем метод для сохранения открытого файла saveDocument().
+Метод должен работать также, как saveDocumentAs(), но не запрашивать файл у пользователя,
+а использовать currentFile. Если currentFile равен null, то вызывать метод saveDocumentAs().
 
-22.5. Если пользователь подтвердит выбор файла:
-22.5.1. Сохранять выбранный файл в поле currentFile. +
-22.5.2. Устанавливать имя файла в качестве заголовка окна представления. +
-22.5.3. Создавать FileWriter на базе currentFile. +
-22.5.4. Переписывать данные из документа document в объекта FileWriter-а аналогично тому,
-как мы это делали в методе getPlainText(). +
-22.6. Метод не должен кидать исключения.
+23.2. Пришло время реализовать метод openDocument().
+Метод должен работать аналогично методу saveDocumentAs(), в той части,
+которая отвечает за выбор файла.
 
-Проверь работу пункта меню Сохранить как…
+Подсказка: Обрати внимание на имя метода для показа диалогового окна.
+
+Когда файл выбран, необходимо:
+23.2.1. Установить новое значение currentFile.
+23.2.2. Сбросить документ.
+23.2.3. Установить имя файла в заголовок у представления.
+23.2.4. Создать FileReader, используя currentFile.
+23.2.5. Вычитать данные из FileReader-а в документ document с помощью объекта класса HTMLEditorKit.
+23.2.6. Сбросить правки (вызвать метод resetUndo представления).
+23.2.7. Если возникнут исключения — залогируй их и не пробрасывай наружу.
+Проверь работу пунктов меню Сохранить и Открыть.
 * */
 
 public class Controller {
@@ -66,6 +69,18 @@ public class Controller {
     }
 
     public void saveDocument() {
+        view.selectHtmlTab();
+        if (currentFile != null) {
+            try {
+                new HTMLEditorKit().write(new FileWriter(currentFile), document, 0, document.getLength());
+            } catch (IOException e) {
+                ExceptionHandler.log(e);
+            } catch (BadLocationException e) {
+                ExceptionHandler.log(e);
+            }
+        } else {
+            saveDocumentAs();
+        }
     }
 
     public String getPlainText() {
@@ -123,7 +138,44 @@ public class Controller {
         currentFile = null;
     }
 
+    /*23.2. Пришло время реализовать метод openDocument().
+Метод должен работать аналогично методу saveDocumentAs(), в той части,
+которая отвечает за выбор файла.
+
+Подсказка: Обрати внимание на имя метода для показа диалогового окна.
+
+Когда файл выбран, необходимо:
+23.2.1. Установить новое значение currentFile.
+23.2.2. Сбросить документ.
+23.2.3. Установить имя файла в заголовок у представления.
+23.2.4. Создать FileReader, используя currentFile.
+23.2.5. Вычитать данные из FileReader-а в документ document с помощью объекта класса HTMLEditorKit.
+23.2.6. Сбросить правки (вызвать метод resetUndo представления).
+23.2.7. Если возникнут исключения — залогируй их и не пробрасывай наружу.
+Проверь работу пунктов меню Сохранить и Открыть.
+    * */
+
     public void openDocument() {
+        view.selectHtmlTab();
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileFilter(new HTMLFileFilter());
+        if (chooser.showOpenDialog(view) == JFileChooser.APPROVE_OPTION) {
+            currentFile = chooser.getSelectedFile();
+            resetDocument();
+            view.setTitle(currentFile.getName());
+            try {
+                FileReader reader = new FileReader(currentFile);
+                new HTMLEditorKit().read(reader, document, 0);
+                view.resetUndo();
+            } catch (FileNotFoundException e) {
+                ExceptionHandler.log(e);
+            } catch (IOException e) {
+                ExceptionHandler.log(e);
+            } catch (BadLocationException e) {
+                ExceptionHandler.log(e);
+            }
+
+        }
 
     }
 }
