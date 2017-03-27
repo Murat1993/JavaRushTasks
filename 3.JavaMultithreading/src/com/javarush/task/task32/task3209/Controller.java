@@ -1,16 +1,5 @@
 package com.javarush.task.task32.task3209;
 
-/*
-*Добавь метод String getPlainText() в контроллер.
-* Он должен получать текст из документа со всеми html тегами.
-17.1. Создай объект StringWriter.
-17.2. Перепиши все содержимое из документа document в созданный объект с помощью
-метода write класса HTMLEditorKit.
-17.3. Как обычно, метод не должен кидать исключений.
-
-
-*/
-
 import com.javarush.task.task32.task3209.listeners.UndoListener;
 
 import javax.swing.text.BadLocationException;
@@ -20,6 +9,27 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+
+/*20.1. Реализуй метод создания нового документа createNewDocument() в контроллере.
+Он должен:
+
+
+20.1.1. Выбирать html вкладку у представления.
+
+20.1.2. Сбрасывать текущий документ. +
+
+20.1.3. Устанавливать новый заголовок окна, например: «HTML редактор«.
+ Воспользуйся методом setTitle(), который унаследован в нашем представлении.
+
+20.1.4. Сбрасывать правки в Undo менеджере. Используй метод resetUndo представления.
+
+20.1.5. Обнулить переменную currentFile.
+
+20.2. Реализуй метод инициализации init() контроллера.
+Он должен просто вызывать метод создания нового документа.
+
+Проверь работу пункта меню Новый.
+* */
 
 public class Controller {
     private View view;
@@ -78,7 +88,7 @@ public class Controller {
     }
 
     public void init() {
-
+        createNewDocument();
     }
 
     public void exit() {
@@ -86,7 +96,11 @@ public class Controller {
     }
 
     public void createNewDocument() {
-
+        view.selectHtmlTab();
+        resetDocument();
+        view.setTitle("HTML редактор");
+        view.resetUndo();
+        currentFile = null;
     }
 
     public void openDocument() {
