@@ -13,19 +13,20 @@ import java.awt.event.ActionListener;
 import static com.javarush.task.task32.task3209.MenuHelper.*;
 
 /*
-14.1. Добавь в класс представления метод selectHtmlTab()+. Он должен:
-14.1.1. Выбирать html вкладку (переключаться на нее).
-14.1.2. Сбрасывать все правки с помощью метода, который ты реализовал ранее.
+Реализуй метод selectedTabChanged() представления. Этот метод вызывается,
+ когда произошла смена выбранной вкладки. Итак:
 
-14.2. Добавь в класс контроллера геттер для модели, в нашем случае это поле document.
-14.3. Добавь в представление метод update(),
-который должен получать документ у контроллера и устанавливать его в
-панель редактирования htmlTextPane.
+18.1. Метод должен проверить, какая вкладка сейчас оказалась выбранной.
 
-14.4. Добавь в представление метод showAbout(),
- который должен показывать диалоговое окно с информацией о программе.
- Информацию придумай сам, а вот тип сообщения должен быть JOptionPane.INFORMATION_MESSAGE.
+18.2. Если выбрана вкладка с индексом 0 (html вкладка),
+значит нам нужно получить текст из plainTextPane и установить его в контроллер
+с помощью метода setPlainText.
 
+18.3. Если выбрана вкладка с индексом 1 (вкладка с html текстом),
+то необходимо получить текст у контроллера с помощью метода getPlainText()
+и установить его в панель plainTextPane.
+
+18.4. Сбросить правки (вызвать метод resetUndo представления).
 
 */
 
@@ -42,6 +43,20 @@ public class View extends JFrame implements ActionListener {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             ExceptionHandler.log(e);
+        }
+    }
+
+    public void selectedTabChanged() {
+        int index = tabbedPane.getSelectedIndex();
+        switch (index) {
+            case 0:
+                controller.setPlainText(plainTextPane.getText());
+                this.resetUndo();
+                break;
+            case 1:
+                plainTextPane.setText(controller.getPlainText());
+                this.resetUndo();
+                break;
         }
     }
 
@@ -119,10 +134,6 @@ public class View extends JFrame implements ActionListener {
         tabbedPane.addChangeListener(new TabbedPaneChangeListener(this));
 
         getContentPane().add(tabbedPane, BorderLayout.CENTER);
-    }
-
-    public void selectedTabChanged() {
-
     }
 
     public Controller getController() {
