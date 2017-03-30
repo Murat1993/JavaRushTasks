@@ -27,6 +27,7 @@ public class Solution {
         Random random = new Random();
         int secret = random.nextInt(1000);
         int tryNumber = -1;
+        System.out.println("Secret:" + secret);
         Scanner scanner = new Scanner(System.in);
         for (int i = 1; i <= 10; i++) {
             System.out.printf("Попытка %d - вводи число: ", i);
@@ -38,8 +39,10 @@ public class Solution {
                 if (i < 10)
                     System.out.println("Загаданное число меньше");
             if (tryNumber == secret)
-                i = stopGame();
-                flagWin = true;
+                if (i < 11) {
+                    i = stopGame();
+                    flagWin = true;
+                }
         }
         if (flagWin)
             printCongratulations(tryNumber);
