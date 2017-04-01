@@ -23,6 +23,12 @@ AdvertisementManager — у каждого планшета будет свой 
  то сделаем его синглтоном.
 
 
+1. В классе Advertisement создай поле long amountPerOneDisplaying.
+Оно должно равняться стоимости одного показа рекламного объявления в копейках (initialAmount/hits).
+Присвой значение полю в конструкторе.
+
+2. В классе Advertisement создай геттеры для полей name, duration и amountPerOneDisplaying.
+
 * */
 
 public class Advertisement {
@@ -32,6 +38,7 @@ public class Advertisement {
     private long initialAmount;
     private int hits;
     private int duration;
+    private long amountPerOneDisplaying;
 
     public Advertisement(Object content, String name, long initialAmount, int hits, int duration) {
         this.content = content;
@@ -39,7 +46,18 @@ public class Advertisement {
         this.initialAmount = initialAmount;
         this.hits = hits;
         this.duration = duration;
+        amountPerOneDisplaying = initialAmount / hits;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public int getDuration() {
+        return duration;
+    }
+
+    public long getAmountPerOneDisplaying() {
+        return amountPerOneDisplaying;
+    }
 }
