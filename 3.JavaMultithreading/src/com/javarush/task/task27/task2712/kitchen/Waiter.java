@@ -1,14 +1,7 @@
-package com.javarush.task.task27.task2712;
+package com.javarush.task.task27.task2712.kitchen;
 
-/*
-
-Что мы имеем? Повар приготовил блюда, пора их уносить, а официант не знает об этом.
-
-Нужно уведомить официанта, что пора забирать заказ с кухни.
-
-Ситуация аналогична предыдущему заданию, поэтому снова будем использовать паттерн Observer.
-
-1. Создадим класс Waiter(Официант) в пакете kitchen, он будет относить заказы назад к столику.
+/*1.
+Создадим класс Waiter(Официант) в пакете kitchen, он будет относить заказы назад к столику.
 Официант будет безымянным.
 
 2. Cook(Повар) готовит заказы, а Waiter их обрабатывает.
@@ -38,18 +31,16 @@ Your order: [Water] of Tablet{number=5}
 Start cooking - Your order: [Water] of Tablet{number=5}
 
 Your order: [Water] of Tablet{number=5} was cooked by Amigo
-
 * */
 
-import com.javarush.task.task27.task2712.kitchen.Cook;
-import com.javarush.task.task27.task2712.kitchen.Waiter;
+import com.javarush.task.task27.task2712.ConsoleHelper;
 
-public class Restaurant {
-    public static void main(String[] args) {
-        Tablet tablet = new Tablet(5);
-        Cook amigo = new Cook("Amigo");
-        amigo.addObserver(new Waiter());
-        tablet.addObserver(amigo);
-        tablet.createOrder();
+import java.util.Observable;
+import java.util.Observer;
+
+public class Waiter implements Observer {
+    @Override
+    public void update(Observable cook, Object order) {
+        ConsoleHelper.writeMessage(order + " was cooked by " + cook);
     }
 }

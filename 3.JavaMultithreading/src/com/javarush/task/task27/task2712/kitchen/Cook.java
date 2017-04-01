@@ -36,6 +36,18 @@ Start cooking - Your order: [Soup] of Tablet{number=5}
 Сделай так чтобы метод createOrder возвращал текущий заказ или null,
 если заказ создать не удалось.
 
+
+3. Метод void update будет выводить в консоль сообщение о том,
+какой заказ и кем был приготовлен:
+
+order + " was cooked by " + cook
+
+4. В классе наследнике Observable перед отправкой заказа сделаем следующее:
+
+4.1. Установим флаг setChanged()
+
+4.2. Отправим наблюдателю заказ - notifyObservers(order);
+
 * */
 
 
@@ -45,7 +57,7 @@ import com.javarush.task.task27.task2712.ConsoleHelper;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Cook implements Observer {
+public class Cook extends Observable implements Observer {
     private final String name;
 
     public Cook(String name) {
@@ -60,5 +72,7 @@ public class Cook implements Observer {
     @Override
     public void update(Observable o, Object order) {
         ConsoleHelper.writeMessage("Start cooking - " + order);
+        setChanged();
+        notifyObservers(order);
     }
 }
