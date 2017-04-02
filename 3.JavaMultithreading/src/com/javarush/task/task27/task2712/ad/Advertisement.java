@@ -14,7 +14,7 @@ public class Advertisement {
     private String name;
     private long initialAmount;
     private int hits;
-    private int duration;
+    private int duration; // продолжительность ролика в секундах
     private long amountPerOneDisplaying;
 
     public Advertisement(Object content, String name, long initialAmount, int hits, int duration) {
