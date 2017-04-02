@@ -25,8 +25,9 @@ public class Tablet extends Observable {
     }
 
     public Order createOrder() {
+        Order order = null;
         try {
-            Order order = new Order(this);
+             order = new Order(this);
             if (!order.isEmpty()) {
                 ConsoleHelper.writeMessage(order.toString());
                 new AdvertisementManager(order.getTotalCookingTime() * 60).processVideos();
@@ -37,6 +38,9 @@ public class Tablet extends Observable {
             return order;
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Console is unavailable.");
+            return null;
+        } catch (RuntimeException e) {
+            logger.log(Level.INFO, "No video is available for the order " + order);
             return null;
         }
     }
