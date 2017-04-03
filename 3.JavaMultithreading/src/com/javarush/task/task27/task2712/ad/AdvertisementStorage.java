@@ -38,6 +38,7 @@ public class AdvertisementStorage {
         videos.add(new Advertisement(someContent, "First Video", 5000, 100, 3 * 60));
         videos.add(new Advertisement(someContent, "Second Video", 100, 10, 15 * 60));
         videos.add(new Advertisement(someContent, "Third Video", 400, 2, 10 * 60));
+        videos.add(new Advertisement(someContent, "Need remove this video!!!", 400, 2, 10 * 60)); // need remove
     }
 
     public static AdvertisementStorage getInstance() {

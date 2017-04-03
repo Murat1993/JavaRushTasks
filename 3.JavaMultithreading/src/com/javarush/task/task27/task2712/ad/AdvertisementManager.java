@@ -88,11 +88,13 @@ First Video is displaying... 50, 277
 * */
 
 
-import java.util.List;
+import java.util.*;
 
 public class AdvertisementManager {
     private final AdvertisementStorage storage = AdvertisementStorage.getInstance();
     private int timeSeconds; // время для приготовления в секундах
+
+    private List<Integer> durations = new ArrayList<>();
 
     public AdvertisementManager(int timeSeconds) {
         this.timeSeconds = timeSeconds;
@@ -101,8 +103,28 @@ public class AdvertisementManager {
     public void processVideos() {
         if (storage.list().isEmpty())
             throw new NoVideoAvailableException();
+
         List<Advertisement> videos = storage.list();
 
+        for (Advertisement video : videos) {
+            durations.add(video.getDuration());
+        }
 
+        Integer[] array = new Integer[durations.size()];
+        durations.toArray(array);
+        Arrays.sort(array);
+        System.out.println(Arrays.toString(array));
+
+    }
+
+    public int process(int index) {
+        if (index == 0) {
+            return durations.get(index);
+        }
+        return process(index) + process(index - 1);
+    }
+
+    public static void main(String[] args) {
+        new AdvertisementManager(45).processVideos();
     }
 }
