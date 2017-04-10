@@ -16,18 +16,15 @@ public class Solution {
 
     public static String convertToDecimalSystem(String s) {
         //напишите тут ваш код
-        try {
-            return String.valueOf(Integer.parseInt(Integer.decode(s) + "", 10));
-        } catch (NumberFormatException e) {
-            try {
-                return String.valueOf(Integer.parseInt(Integer.decode(s) + "", 16));
-            } catch (NumberFormatException e1) {
-                try {
-                    return String.valueOf(Integer.parseInt(Integer.decode(s) + "", 8));
-                } catch (NumberFormatException e2) {
-                    return String.valueOf(Integer.parseInt(Integer.decode(s) + "", 2));
-                }
-            }
+
+        if (s.startsWith("0X") || s.startsWith("0x")) {
+            return String.valueOf(Integer.parseInt(String.valueOf(Integer.decode(s)), 10));
+
         }
+
+        if (s.startsWith("0B") || s.startsWith("0b" )) {
+            return String.valueOf(Integer.parseInt(s, 10));
+        }
+        return "";
     }
 }
