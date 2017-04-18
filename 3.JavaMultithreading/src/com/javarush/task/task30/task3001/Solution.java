@@ -2,6 +2,13 @@ package com.javarush.task.task30.task3001;
 
 /* 
 Конвертер систем счислений
+Реализуй логику метода convertNumberToOtherNumerationSystem, 
+который должен переводить число number.getDigit(),
+из одной системы счисления (numerationSystem) в другую (expectedNumerationSystem).
+Брось NumberFormatException, если переданное число некорректно,
+например, число «120» с системой счисления 2.
+Валидация для — number.getDigit() — целое не отрицательное.
+Метод main не участвует в тестировании.
 */
 public class Solution {
     public static void main(String[] args) {
@@ -16,6 +23,10 @@ public class Solution {
 
     public static Number convertNumberToOtherNumerationSystem(Number number, NumerationSystem expectedNumerationSystem) {
         //напишите тут ваш код
+        String digit = number.getDigit();
+        int numerationSystemIntValue = number.getNumerationSystem().getNumerationSystemIntValue();
+
+
         return null;
     }
 }
