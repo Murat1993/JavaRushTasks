@@ -2,21 +2,23 @@ package com.javarush.task.task20.task2028;
 
 import java.io.Serializable;
 import java.util.AbstractList;
+import java.util.Collection;
 import java.util.List;
 
 /* 
-Построй дерево(1)
-Амиго, похоже ты уже достаточно окреп. Самое время проверить свои навыки в большой задаче!
-Сегодня реализуем свое дерево немного нестандартным способом(на базе AbstractList).
-Вводную информацию можешь получить используя свой любимый поисковик и текст ниже.
+Несмотря на то что наше дерево является потомком класса AbstractList,
+это не список в привычном понимании.
+В частности нам недоступны принимающие в качестве параметра индекс элемента.
+Такие методы необходимо переопределить и бросить новое исключение типа UnsupportedOperationException.
 
-Элементы дерева должны следовать так как показано на картинке:
-http://info.javarush.ru/uploads/images/00/04/89/2014/03/21/ee9a9b.jpg
-
-Для начала сделаем наше дерево потомком класса AbstractList с параметром типа String, а также
-реализуем интерфейсы Cloneable и Serializable.
-
-Реализацию методов get(int index) и size() пока оставь стандартной.
+Вот их список:
+public String get(int index)
+public String set(int index, String element)
+public void add(int index, String element)
+public String remove(int index)
+public List<String> subList(int fromIndex, int toIndex)
+protected void removeRange(int fromIndex, int toIndex)
+public boolean addAll(int index, Collection<? extends String> c)
 */
 public class CustomTree extends AbstractList<String> implements Cloneable, Serializable {
     public static void main(String[] args) {
@@ -31,7 +33,37 @@ public class CustomTree extends AbstractList<String> implements Cloneable, Seria
 
     @Override
     public String get(int index) {
-        return null;
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String set(int index, String element) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void add(int index, String element) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String remove(int index) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends String> c) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public List<String> subList(int fromIndex, int toIndex) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    protected void removeRange(int fromIndex, int toIndex) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
