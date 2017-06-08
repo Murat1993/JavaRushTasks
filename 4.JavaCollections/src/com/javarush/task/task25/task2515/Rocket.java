@@ -1,22 +1,16 @@
 package com.javarush.task.task25.task2515;
 
-/*
-Теперь напишем класс Rocket.
-Практически совпадает с классом Bomb.
-Только:
-а) Ракета летит вверх (т.е. y уменьшается на 1);
-б) Рисуем не букву «B«, а букву «R«.
-
-
-* */
-
+/**
+ * Класс для объектов-ракета
+ */
 public class Rocket extends BaseObject {
+
     public Rocket(double x, double y) {
         super(x, y, 1);
     }
 
     /**
-     * Отрисовываем себя на холсте.
+     * Метод рисует свой объект на "канвасе".
      */
     @Override
     public void draw(Canvas canvas) {
@@ -24,7 +18,7 @@ public class Rocket extends BaseObject {
     }
 
     /**
-     * Двигаем себя вниз на один ход.
+     * Двигаем себя вверх на один ход.
      */
     @Override
     public void move() {
